@@ -17,19 +17,23 @@ const OrderScreen = ({ updateVegetablePrices = (p0?: number, p1?: number) => {} 
     ]);
 
     const [users, setUsers] = useState([
-        { id: 1, name: "John Doe", email: "john@example.com" },
-        { id: 2, name: "Jane Smith", email: "jane@example.com" },
-        { id: 3, name: "John Doe", email: "john@example.com" },
-        { id: 4, name: "Jane Smith", email: "jane@example.com" },
+        { id: 1, name: "John", email: "john@example.com" },
+        { id: 2, name: "Smith", email: "jane@example.com" },
+        { id: 3, name: "Doe", email: "john@example.com" },
+        { id: 4, name: "Jane", email: "jane@example.com" },
+        { id: 5, name: "John", email: "john@example.com" },
+        { id: 6, name: "Smith", email: "jane@example.com" },
+        { id: 7, name: "Doe", email: "john@example.com" },
+        { id: 8, name: "Jane", email: "jane@example.com" },
     ]);
 
     const [orders, setOrders] = useState([
-        { id: 1, user: "John Doe", item: "Tomato", price: "$2/kg", status: "Pending" },
-        { id: 2, user: "Jane Smith", item: "Potato", price: "$1.5/kg", status: "Pending" },
-        { id: 1, user: "John Doe", item: "Tomato", price: "$2/kg", status: "Pending" },
-        { id: 2, user: "Jane Smith", item: "Potato", price: "$1.5/kg", status: "Pending" },
-        { id: 1, user: "John Doe", item: "Tomato", price: "$2/kg", status: "Pending" },
-        { id: 2, user: "Jane Smith", item: "Potato", price: "$1.5/kg", status: "Pending" },
+        { id: 1, user: "Samiul", item: "Tomato", price: "2/kg", status: "Pending" },
+        { id: 2, user: "Imran", item: "Potato", price: "1.5/kg", status: "Pending" },
+        { id: 3, user: "Rafi", item: "Tomato", price: "2/kg", status: "Pending" },
+        { id: 4, user: "sam", item: "Potato", price: "1.5/kg", status: "Pending" },
+        { id: 5, user: "al", item: "Tomato", price: "2/kg", status: "Pending" },
+        { id: 6, user: "khandaker", item: "Potato", price: "1.5/kg", status: "Pending" },
     ]);
 
     const updatePrice = (id=0, newPrice = 0) => {
@@ -111,8 +115,8 @@ const styles = StyleSheet.create({
     input: { borderBottomWidth: 1, width: 80, textAlign: "center", marginTop: 5 },
     updateButton: { marginTop: 5, padding: 8, backgroundColor: "#007bff", borderRadius: 5 },
     updateButtonText: { color: "#fff", fontWeight: "bold" },
-    userCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 10, backgroundColor: "#f2f2f2", borderRadius: 10, marginBottom: 10 },
-    orderCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 10, backgroundColor: "#e6f7e6", borderRadius: 10, marginBottom: 10 },
+    userCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15, backgroundColor: "#f2f2f2", borderRadius: 10, marginBottom: 10 },
+    orderCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15, backgroundColor: "#e6f7e6", borderRadius: 10, marginBottom: 15 },
 });
 
 export default OrderScreen;

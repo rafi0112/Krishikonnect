@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, fontSize: 16 },
 
   // Sections
-  sectionTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 10 },
+  sectionTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 30, marginTop:40 },
   
   // Scrollable Cards (Vegetables)
   scrollContainer: { flexDirection: "row", marginBottom: 20 },
