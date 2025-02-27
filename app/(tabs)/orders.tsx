@@ -19,8 +19,8 @@ const OrderScreen = ({ updateVegetablePrices = (p0?: number, p1?: number) => {} 
     const [users, setUsers] = useState([
         { id: 1, name: "John Doe", email: "john@example.com" },
         { id: 2, name: "Jane Smith", email: "jane@example.com" },
-        { id: 1, name: "John Doe", email: "john@example.com" },
-        { id: 2, name: "Jane Smith", email: "jane@example.com" },
+        { id: 3, name: "John Doe", email: "john@example.com" },
+        { id: 4, name: "Jane Smith", email: "jane@example.com" },
     ]);
 
     const [orders, setOrders] = useState([

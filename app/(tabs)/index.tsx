@@ -1,37 +1,42 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Linking } from "react-native";
+
+const openGoogleMaps = (location: string) => {
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    location
+  )}`;
+  Linking.openURL(url);
+};
+
 
 // Importing local images correctly
 const vegetables = [
-  { name: "Tomato", price: "$2/kg", image: require("../../assets/images/Tomato_je.jpg") },
-  { name: "Potato", price: "$1.5/kg", image: require("../../assets/images/potato.jpg") },
-  { name: "Carrot", price: "$3/kg", image: require("../../assets/images/carrot.jpg") },
-  { name: "Cabbage", price: "$1.8/kg", image: require("../../assets/images/cabage.jpg") },
-  { name: "Onion", price: "$2.2/kg", image: require("../../assets/images/onion.jpg") },
-  { name: "Broccoli", price: "$3.5/kg", image: require("../../assets/images/Broccoli_and_cross_section_edit.jpg") },
-  { name: "Spinach", price: "$2/kg", image: require("../../assets/images/spinach.jpg") },
-  { name: "Cucumber", price: "$1.6/kg", image: require("../../assets/images/cucumber.jpg") },
-  { name: "Peppers", price: "$4/kg", image: require("../../assets/images/pepper.jpg") },
-  { name: "Lettuce", price: "$2.5/kg", image: require("../../assets/images//lettuce.jpg") },
+  { name: "Tomato", price: "tk 2/kg", image: require("../../assets/images/Tomato_je.jpg") },
+  { name: "Potato", price: "tk 1.5/kg", image: require("../../assets/images/potato.jpg") },
+  { name: "Carrot", price: "tk 3/kg", image: require("../../assets/images/carrot.jpg") },
+  { name: "Cabbage", price: "tk 1.8/kg", image: require("../../assets/images/cabage.jpg") },
+  { name: "Onion", price: "tk 2.2/kg", image: require("../../assets/images/onion.jpg") },
+  { name: "Broccoli", price: "tk 3.5/kg", image: require("../../assets/images/Broccoli_and_cross_section_edit.jpg") },
+  { name: "Spinach", price: "tk 2/kg", image: require("../../assets/images/spinach.jpg") },
+  { name: "Cucumber", price: "tk 1.6/kg", image: require("../../assets/images/cucumber.jpg") },
+  { name: "Peppers", price: "tk 4/kg", image: require("../../assets/images/pepper.jpg") },
+  { name: "Lettuce", price: "tk 2.5/kg", image: require("../../assets/images//lettuce.jpg") },
 ];
 
 const consultants = [
-  { name: "Dr. John Doe", degree: "PhD in Agriculture", position: "Senior Consultant", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Ms. Jane Smith", degree: "MSc in Horticulture", position: "Consultant", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Dr. Robert Brown", degree: "PhD in Soil Science", position: "Lead Consultant", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Dr. Emily Davis", degree: "PhD in Organic Farming", position: "Agriculture Consultant", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Mr. Alex Wilson", degree: "MSc in Agribusiness", position: "Farm Management Expert", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Dr. Michael Lee", degree: "PhD in Plant Pathology", position: "Crop Specialist", image: { uri: "https://via.placeholder.com/100" } },
-  { name: "Ms. Sarah Johnson", degree: "MSc in Agricultural Economics", position: "Market Analyst", image: { uri: "https://via.placeholder.com/100" } },
+  { name: "Dr. John Doe", degree: "PhD in Agriculture", position: "Senior Consultant", image: require("../../assets/images/thumbsup.png"), contact: "mailto:johndoe@example.com" },
+  { name: "Ms. Jane Smith", degree: "MSc in Horticulture", position: "Consultant", image: require("../../assets/images/thumbsup.png"), contact: "mailto:janesmith@example.com" },
+  { name: "Dr. Robert Brown", degree: "PhD in Soil Science", position: "Lead Consultant", image: require("../../assets/images/thumbsup.png"), contact: "mailto:robertbrown@example.com" },
+  { name: "Dr. Emily Davis", degree: "PhD in Organic Farming", position: "Agriculture Consultant", image: require("../../assets/images/thumbsup.png"), contact: "mailto:emilydavis@example.com" },
+  { name: "Mr. Alex Wilson", degree: "MSc in Agribusiness", position: "Farm Management Expert", image: require("../../assets/images/thumbsup.png"), contact: "mailto:alexwilson@example.com" },
+  { name: "Dr. Michael Lee", degree: "PhD in Plant Pathology", position: "Crop Specialist", image: require("../../assets/images/thumbsup.png"), contact: "mailto:michaellee@example.com" },
+  { name: "Ms. Sarah Johnson", degree: "MSc in Agricultural Economics", position: "Market Analyst", image: require("../../assets/images/thumbsup.png"), contact: "mailto:sarahjohnson@example.com" },
 ];
 
 const vans = [
-  { location: "City Center", image: { uri: "https://via.placeholder.com/150" } },
-  { location: "North Avenue", image: { uri: "https://via.placeholder.com/150" } },
-  { location: "South Park", image: { uri: "https://via.placeholder.com/150" } },
-  { location: "East Market", image: { uri: "https://via.placeholder.com/150" } },
-  { location: "West End", image: { uri: "https://via.placeholder.com/150" } },
+  { location: "Dhaka", image: { uri: "https://via.placeholder.com/150" } },
 ];
 
 export default function HomeScreen() {
@@ -87,13 +92,15 @@ export default function HomeScreen() {
       ))}
 
       {/* Van Locations Section */}
-      <Text style={styles.sectionTitle}>Van Locations</Text>
-      {vans.map((van, index) => (
-        <View key={index} style={styles.vanCard}>
-          <Image source={van.image} style={styles.vanImage} />
-          <Text style={styles.vanLocation}>{van.location}</Text>
-        </View>
-      ))}
+      <Text style={styles.sectionTitle}>Service Locations</Text>
+{vans.map((van, index) => (
+  <TouchableOpacity key={index} onPress={() => openGoogleMaps(van.location)}>
+    <View style={styles.vanCard}>
+      <Image source={require("../../assets/images/map-placeholder.jpg.png")} style={styles.vanImage} />
+      <Text style={styles.vanLocation}>{van.location}</Text>
+    </View>
+  </TouchableOpacity>
+))}
 
     </ScrollView>
   );
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
   consultantName: { fontSize: 16, fontWeight: "bold" },
 
   // Van Locations
-  vanCard: { alignItems: "center", marginBottom: 10 },
+  vanCard: { alignItems: "center", marginBottom: 50 },
   vanImage: { width: "100%", height: 150, borderRadius: 10 },
   vanLocation: { fontSize: 16, fontWeight: "bold", marginTop: 5 },
 });
