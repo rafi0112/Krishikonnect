@@ -1,122 +1,174 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, Alert } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+//order today
 
-const OrderScreen = ({ updateVegetablePrices = (p0?: number, p1?: number) => {} }) => {
-    const [vegetables, setVegetables] = useState([
-        { id: 1, name: "Tomato", price: 2, image: require("../../assets/images/Tomato_je.jpg") },
-        { id: 2, name: "Potato", price: 1.5, image: require("../../assets/images/potato.jpg") },
-        { id: 3, name: "Carrot", price: 3, image: require("../../assets/images/carrot.jpg") },
-        { id: 4, name: "Cabbage", price: 1.8, image: require("../../assets/images/cabage.jpg") },
-        { id: 5, name: "Onion", price: 2.2, image: require("../../assets/images/onion.jpg") },
-        { id: 6, name: "Broccoli", price: 3.5, image: require("../../assets/images/Broccoli_and_cross_section_edit.jpg") },
-        { id: 7, name: "Spinach", price: 2, image: require("../../assets/images/spinach.jpg") },
-        { id: 8, name: "Cucumber", price: 1.6, image: require("../../assets/images/cucumber.jpg") },
-        { id: 9, name: "Peppers", price: 4, image: require("../../assets/images/pepper.jpg") },
-        { id: 10, name: "Lettuce", price: 2.5, image: require("../../assets/images/lettuce.jpg") },
-    ]);
+import React, { useState } from "react";
+import {
+View,
+Text,
+TextInput,
+TouchableOpacity,
+Image,
+ScrollView,
+StyleSheet,
+} from "react-native";
+import { useVegetableContext } from "../(tabs)/VegetableContext";
+import { Ionicons } from "@expo/vector-icons"; // Icon library
 
-    const [users, setUsers] = useState([
-        { id: 1, name: "John", email: "john@example.com" },
-        { id: 2, name: "Smith", email: "jane@example.com" },
-        { id: 3, name: "Doe", email: "john@example.com" },
-        { id: 4, name: "Jane", email: "jane@example.com" },
-        { id: 5, name: "John", email: "john@example.com" },
-        { id: 6, name: "Smith", email: "jane@example.com" },
-        { id: 7, name: "Doe", email: "john@example.com" },
-        { id: 8, name: "Jane", email: "jane@example.com" },
-    ]);
+const OrderScreen = () => {
+const { vegetables, updateVegetablePrice } = useVegetableContext();
+const [prices, setPrices] = useState<{ [key: number]: string }>({});
+const [customers, setCustomers] = useState([
+    { id: 1, name: "John", email: "john@example.com" },
+    { id: 2, name: "Smith", email: "jane@example.com" },
+    { id: 3, name: "Doe", email: "john@example.com" },
+    { id: 4, name: "Jane", email: "jane@example.com" },
+]);
+const [orders, setOrders] = useState([
+    { id: 1, customer: "Samiul", item: "Tomato", quantity: "2/kg", status: "Pending" },
+    { id: 2, customer: "Imran", item: "Potato", quantity: "1.5/kg", status: "Pending" },
+]);
 
-    const [orders, setOrders] = useState([
-        { id: 1, user: "Samiul", item: "Tomato", price: "2/kg", status: "Pending" },
-        { id: 2, user: "Imran", item: "Potato", price: "1.5/kg", status: "Pending" },
-        { id: 3, user: "Rafi", item: "Tomato", price: "2/kg", status: "Pending" },
-        { id: 4, user: "sam", item: "Potato", price: "1.5/kg", status: "Pending" },
-        { id: 5, user: "al", item: "Tomato", price: "2/kg", status: "Pending" },
-        { id: 6, user: "khandaker", item: "Potato", price: "1.5/kg", status: "Pending" },
-    ]);
-
-    const updatePrice = (id=0, newPrice = 0) => {
-        setVegetables((prev) => prev.map((veg) => (veg.id === id ? { ...veg, price: newPrice } : veg)));
-        if (typeof updateVegetablePrices === "function") {
-        updateVegetablePrices(id=0, newPrice=0);
-        }
-    };
-
-        const deleteUser = (id = 0) => {
-        Alert.alert("Confirm", "Are you sure you want to delete this user?", [
-        { text: "Cancel", style: "cancel" },
-        { text: "Delete", onPress: () => setUsers(users.filter((user) => user.id !== id)) },
-        ]);
-    };
-
-    const markAsPaid = (id = 0) => {
-        setOrders((prev) => prev.map((order) => (order.id === id ? { ...order, status: "Paid" } : order)));
-    };
-
-    return (
-        <ScrollView style={styles.container}>
-        <Text style={styles.sectionTitle}>Price Updates</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-            {vegetables.map((veg) => (
-            <View key={veg.id} style={styles.card}>
-                <Image source={veg.image} style={styles.image} />
-                <Text style={styles.itemName}>{veg.name}</Text>
-                <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={String(veg.price)}
-                onChangeText={(text) => {
-                    const newPrice = parseFloat(text) || 0;
-                    setVegetables((prev) => prev.map((v) => (v.id === veg.id ? { ...v, price: newPrice } : v)));
-                }}
-                />
-                <TouchableOpacity style={styles.updateButton} onPress={() => updatePrice(veg.id, veg.price)}>
-                <Text style={styles.updateButtonText}>Update</Text>
-                </TouchableOpacity>
-            </View>
-            ))}
-        </ScrollView>
-
-        <Text style={styles.sectionTitle}>Customers</Text>
-        {users.map((user) => (
-            <View key={user.id} style={styles.userCard}>
-            <Text>{user.name}</Text>
-            <Text>{user.email}</Text>
-            <TouchableOpacity onPress={() => deleteUser(user.id)}>
-                <Ionicons name="trash" size={24} color="red" />
-            </TouchableOpacity>
-            </View>
-        ))}
-
-        <Text style={styles.sectionTitle}>Orders</Text>
-        {orders.map((order) => (
-            <View key={order.id} style={styles.orderCard}>
-            <Text>{order.user} - {order.item} ({order.price})</Text>
-            <Text>Status: {order.status}</Text>
-            {order.status !== "Paid" && (
-                <TouchableOpacity onPress={() => markAsPaid(order.id)}>
-                <Ionicons name="checkmark-circle" size={24} color="green" />
-                </TouchableOpacity>
-            )}
-            </View>
-        ))}
-        </ScrollView>
+const toggleOrderStatus = (id: number) => {
+    setOrders((prevOrders) =>
+    prevOrders.map((order) =>
+        order.id === id
+        ? { ...order, status: order.status === "Pending" ? "Paid" : "Pending" }
+        : order
+    )
     );
 };
 
+const removeCustomer = (id: number) => {
+    setCustomers(customers.filter((customer) => customer.id !== id));
+};
+
+return (
+    <ScrollView contentContainerStyle={styles.container}>
+    {/* Vegetables Section */}
+    <Text style={styles.header}>Vegetables</Text>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
+        {vegetables.map((veg) =>
+        veg ? (
+            <View key={veg.id} style={styles.card}>
+            <Image source={veg.image} style={styles.image} />
+            <Text style={styles.name}>{veg.name}</Text>
+            <TextInput
+                keyboardType="numeric"
+                style={styles.input}
+                value={prices[veg.id] !== undefined ? prices[veg.id] : String(veg.price)}
+                onChangeText={(text) =>
+                setPrices((prev) => ({
+                    ...prev,
+                    [veg.id]: text,
+                }))
+                }
+            />
+            <TouchableOpacity
+                style={styles.updateButton}
+                onPress={() => {
+                const newPrice = parseFloat(prices[veg.id]) || veg.price;
+                updateVegetablePrice(veg.id, newPrice);
+                }}
+            >
+                <Text style={styles.updateText}>Update</Text>
+            </TouchableOpacity>
+            </View>
+        ) : null
+        )}
+    </ScrollView>
+
+    {/* Customers Section */}
+    <Text style={styles.header}>Customers</Text>
+    {customers.map((customer) => (
+        <View key={customer.id} style={styles.customerRow}>
+        <Text style={styles.customerText}>{customer.name}</Text>
+        <Text style={styles.customerEmail}>{customer.email}</Text>
+        <TouchableOpacity onPress={() => removeCustomer(customer.id)}>
+            <Ionicons name="trash" size={24} color="red" />
+        </TouchableOpacity>
+        </View>
+    ))}
+
+    {/* Orders Section */}
+    <Text style={styles.header}>Orders</Text>
+    {orders.map((order) => (
+        <View key={order.id} style={styles.orderRow}>
+        <Text style={styles.orderText}>
+            {order.customer} - {order.item} ({order.quantity})
+        </Text>
+        <TouchableOpacity onPress={() => toggleOrderStatus(order.id)}>
+            <Text style={[styles.statusText, order.status === "Paid" && styles.paidStatus]}>
+            Status: {order.status}
+            </Text>
+        </TouchableOpacity>
+        {order.status === "Paid" && <Ionicons name="checkmark-circle" size={24} color="green" />}
+        </View>
+    ))}
+    </ScrollView>
+);
+};
+
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-    sectionTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 10, marginTop: 80 },
-    scrollContainer: { flexDirection: "row", marginBottom: 20 },
-    card: { alignItems: "center", padding: 10, marginRight: 10, backgroundColor: "#f9f9f9", borderRadius: 10 },
-    image: { width: 80, height: 80, borderRadius: 10 },
-    itemName: { fontSize: 16, fontWeight: "bold", marginTop: 5 },
-    input: { borderBottomWidth: 1, width: 80, textAlign: "center", marginTop: 5 },
-    updateButton: { marginTop: 5, padding: 8, backgroundColor: "#007bff", borderRadius: 5 },
-    updateButtonText: { color: "#fff", fontWeight: "bold" },
-    userCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15, backgroundColor: "#f2f2f2", borderRadius: 10, marginBottom: 10 },
-    orderCard: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15, backgroundColor: "#e6f7e6", borderRadius: 10, marginBottom: 15 },
+container: { padding: 15, backgroundColor: "#fff" },
+header: { fontSize: 25, fontWeight: "bold", marginBottom: 10,marginTop:60 },
+horizontalScroll: { flexDirection: "row", paddingVertical: 10 },
+card: {
+    alignItems: "center",
+    marginRight: 15,
+    padding: 10,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    width: 120,
+},
+image: { width: 80, height: 80, borderRadius: 10 },
+name: { fontSize: 16, fontWeight: "bold", marginTop: 5 },
+input: {
+    borderBottomWidth: 1,
+    width: 80,
+    textAlign: "center",
+    marginTop: 5,
+    fontSize: 16,
+    paddingVertical: 5,
+},
+updateButton: {
+    marginTop: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    backgroundColor: "#007bff",
+    borderRadius: 5,
+},
+updateText: { color: "#fff", fontWeight: "bold" },
+
+// Customers Section
+customerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#f2f2f2",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 8,
+},
+customerText: { fontSize: 16, fontWeight: "bold" },
+customerEmail: { color: "gray" },
+
+// Orders Section
+orderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#d4edda",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 8,
+},
+orderText: { fontSize: 16 },
+statusText: { marginLeft: 10, color: "green", fontWeight: "bold" },
+paidStatus: { color: "blue" },
 });
 
 export default OrderScreen;
